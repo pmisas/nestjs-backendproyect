@@ -4,23 +4,34 @@ import { CreateUserDto } from 'src/shared';
 import { EditUserDto } from 'src/shared/dto/user/edit-user.dto';
 import { LoginDto } from 'src/shared/dto/user/login.dto';
 import { JwtService } from '@nestjs/jwt';
-import { Response, response } from 'express';
+import { Response, Request } from 'express';
 
-@Controller('user')
+@Controller('auth')
 export class AuthController {
+  [x: string]: any;
 
   constructor(
       private readonly userService : AuthService,
+      private readonly jwtService: JwtService 
   ){}
 
-  @Get()
-  async getAll(){
-    const data =  await this.userService.getall()
-    return {
-      error: false,
-      message: 'Peticion correcta',
-      data: data
-    }
+  //@Get()
+  //async getAll(){
+  //  const data =  await this.userService.getall()
+  //  return {
+  //    error: false,
+  //    message: 'Peticion correcta',
+  //    data: data
+  //  }
+  //}
+
+  @Get('user')
+  async user(@Req()request: Request) {
+    const cookie = request.cookies['jwt']
+
+    const data =  await this.jwtService.verifyAsync(cookie)
+
+    return this.userService.user(request)
   }
 
   @Get(':id')
@@ -31,13 +42,6 @@ export class AuthController {
       message: 'Peticion correcta',
       data: data
     }
-  }
-
-  @Get()
-  async actualUser(@Req() request: Request){
-    const cookie = request['jwt']
-
-    return cookie
   }
 
   @Post('register')
@@ -67,4 +71,10 @@ export class AuthController {
   async deleteUser(@Param('id', ParseIntPipe) id:number){
     return await this.userService.deleteUser(id)
   }
+
+  @Post('logout')
+  async logout(@Res({'passthrough':true}) response: Response){
+    return await this.userService.logout(response)
+  }
+
 }

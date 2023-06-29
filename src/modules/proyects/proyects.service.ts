@@ -17,6 +17,7 @@ export class ProyectsService {
     async getAll(){
         return await this.proyectRepository.find()
     }
+    
 
     async getProyect(idProyect:number){
         const proyect =  await this.proyectRepository.findOne({

@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 import {compare } from 'bcrypt'
 import {JwtService } from '@nestjs/jwt';
 import { IPayload } from './payload.interface';
-import { Response } from 'express';
+import { Response, Request} from 'express';
 
 @Injectable()
 export class AuthService {
@@ -55,7 +55,11 @@ export class AuthService {
         const hashedPassword = await bcrypt.hash(dto.password, saltOrRounds)
         dto.password=hashedPassword
         const user = await this.authRepository.create(dto)
-        return await this.authRepository.save(user);
+        const newuser = await this.authRepository.save(user);
+        
+        const {password, ...result} = newuser
+
+        return result
     }
 
     //EDITAR USUARIO
@@ -98,6 +102,35 @@ export class AuthService {
         response.cookie('jwt', jwt, {httpOnly:true})
 
         return {message: 'succes'};
+    }
+
+    async user(request: Request){
+        try {
+        const cookie = request.cookies['jwt']
+
+        const data =  await this.jwtService.verifyAsync(cookie)
+        if (!data){
+            throw new UnauthorizedException();
+        }
+
+        const user = await this.getUser(data['id'])
+        //quito contrase;a
+        const {password, ...result} = user
+
+        return result
+
+
+        }catch (error){
+            throw new UnauthorizedException();
+        }
+        
+    }
+    
+    async logout(@Res({passthrough: true}) response: Response){
+        response.clearCookie('jwt');
+        return {
+            message: 'success'
+        }
     }
 }
 
