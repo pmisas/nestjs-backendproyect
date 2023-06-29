@@ -10,14 +10,29 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-let AppModule = class AppModule {
+const tasks_module_1 = require("./modules/tasks/tasks.module");
+const proyects_module_1 = require("./modules/proyects/proyects.module");
+const typeorm_1 = require("@nestjs/typeorm");
+const auth_module_1 = require("./modules/auth/auth.module");
+let AppModule = exports.AppModule = class AppModule {
 };
-AppModule = __decorate([
+exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [],
+        imports: [
+            typeorm_1.TypeOrmModule.forRoot({
+                type: 'mysql',
+                host: 'localhost',
+                port: 3306,
+                username: 'root',
+                password: '',
+                database: 'test',
+                entities: [__dirname + '**/entities/*.entity{.ts,.js}'],
+                synchronize: true,
+            }),
+            tasks_module_1.TasksModule, proyects_module_1.ProyectsModule, auth_module_1.AuthModule
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
 ], AppModule);
-exports.AppModule = AppModule;
 //# sourceMappingURL=app.module.js.map
