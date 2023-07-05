@@ -14,15 +14,6 @@ const tasks_module_1 = require("./modules/tasks/tasks.module");
 const proyects_module_1 = require("./modules/proyects/proyects.module");
 const typeorm_1 = require("@nestjs/typeorm");
 const auth_module_1 = require("./modules/auth/auth.module");
-const bd_options = {
-    "host": process.env.DB_HOST,
-    "port": parseInt(process.env.DB_PORT || '5432'),
-    "username": process.env.DB_USER,
-    "password": process.env.DB_PASSWORD,
-    "database": process.env.DB_NAME,
-    "entities": [__dirname + '**/entities/*.entity{.ts,.js}'],
-    "synchronize": true,
-};
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -30,7 +21,11 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             typeorm_1.TypeOrmModule.forRoot({
                 "type": 'mysql',
-                ...bd_options,
+                "host": 'b7b5ypanwlmolmkztjsm-mysql.services.clever-cloud.com',
+                "port": 3306,
+                "username": 'ue00drfpqhozx7go',
+                "password": 'FwZ4ADfiXnc5vsJJlpPq',
+                "database": 'b7b5ypanwlmolmkztjsm',
                 "entities": [__dirname + '**/entities/*.entity{.ts,.js}'],
                 "synchronize": true,
             }),
