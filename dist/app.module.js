@@ -20,14 +20,14 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             typeorm_1.TypeOrmModule.forRoot({
-                type: 'mysql',
-                host: 'localhost',
-                port: 3306,
-                username: 'root',
-                password: '',
-                database: 'test',
-                entities: [__dirname + '**/entities/*.entity{.ts,.js}'],
-                synchronize: true,
+                "type": 'mysql',
+                "host": 'b7b5ypanwlmolmkztjsm-mysql.services.clever-cloud.com',
+                "port": 3306,
+                "username": 'ue00drfpqhozx7go',
+                "password": 'FwZ4ADfiXnc5vsJJlpPq',
+                "database": 'b7b5ypanwlmolmkztjsm',
+                "entities": [__dirname + '**/entities/*.entity{.ts,.js}'],
+                "synchronize": true,
             }),
             tasks_module_1.TasksModule, proyects_module_1.ProyectsModule, auth_module_1.AuthModule
         ],

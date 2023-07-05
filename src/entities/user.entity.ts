@@ -11,7 +11,7 @@ export class User {
     @Column()
     name:string
 
-    @Column()
+    @Column({nullable: true })
     age:number
 
     @Column({type: 'varchar', length: 25, nullable: false, unique:true})
@@ -20,22 +20,22 @@ export class User {
     @Column({type: 'varchar', nullable: false})
     password: string;
 
-    @Column()
+    @Column({default: false})
     is_Admin: boolean
 
     @Column({default: "assets/images/user/gato.jpg", nullable:false})
     avatar: string;
 
-    @Column()
+    @Column({default: ""})
     info: string;
 
-    @Column()
+    @Column({default: ""})
     gender: string;
 
-    @Column()
+    @Column({default: ""})
     description: string;
 
-    @Column()
+    @Column({default: ""})
     charge:string
 
     @Column({nullable:true})
