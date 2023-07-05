@@ -1,12 +1,12 @@
 
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 export class CreateProyectDto {
-    @IsNotEmpty()
+    
     @IsString()
     name: string;
 
-    @IsNumber()
     @IsNotEmpty()
+    @IsNumber()
     id_Admin:number
 
     @IsString()

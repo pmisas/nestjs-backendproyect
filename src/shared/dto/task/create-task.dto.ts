@@ -1,6 +1,7 @@
 import { IsArray, IsBoolean, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { CreateUserDto } from "../user/create-user.dto";
 import { Proyect } from "src/entities/proyect.entity";
+import { User } from "src/entities/user.entity";
 
 export class CreateTaskDto {
 
@@ -17,15 +18,15 @@ export class CreateTaskDto {
     description: string;
 
     @IsNotEmpty()
-    @IsDateString()
-    date: Date;
+    @IsString()
+    date: string;
 
     @IsNotEmpty()
     @IsBoolean()
-    chek: boolean;
+    check: boolean;
 
     @IsOptional()
     @IsArray()
-    users:[]
+    users:User[]
 
 }

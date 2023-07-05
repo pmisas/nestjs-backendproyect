@@ -35,6 +35,15 @@ export class ProyectsService {
         return await this.proyectRepository.save(proyect);
     }
 
+    async createNewProyect(id:number){
+        const proyect = new Proyect()
+        proyect.name = 'proyect'
+        proyect.id_Admin = id
+        proyect.description = 'description proyect'
+        
+        return await this.proyectRepository.save(proyect);
+    }
+
     //EDITAR PROYECTO
     async editProyect(idProyect:number,dto:EditProyectDto){
         const proyect = this.proyectRepository.findOne({
@@ -50,4 +59,5 @@ export class ProyectsService {
     async deleteProyect(id:number){
         return await this.proyectRepository.delete(id)
     }
+
 }

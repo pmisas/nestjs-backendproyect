@@ -11,6 +11,9 @@ export class User {
     @Column()
     name:string
 
+    @Column()
+    age:number
+
     @Column({type: 'varchar', length: 25, nullable: false, unique:true})
     email: string;
 
@@ -20,12 +23,26 @@ export class User {
     @Column()
     is_Admin: boolean
 
-    @Column()
+    @Column({default: "assets/images/user/gato.jpg", nullable:false})
     avatar: string;
+
+    @Column()
+    info: string;
+
+    @Column()
+    gender: string;
+
+    @Column()
+    description: string;
+
+    @Column()
+    charge:string
 
     @Column({nullable:true})
     id_Proyect: number
 
     @ManyToMany(()=> Task, (task)=> task.users)
     tasks: Task[]
+
+
 }

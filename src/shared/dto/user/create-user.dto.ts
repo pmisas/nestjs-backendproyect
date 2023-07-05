@@ -19,13 +19,33 @@ export class CreateUserDto {
     @IsBoolean()
     is_Admin: boolean
 
-    @IsOptional()
     @IsString()
     avatar: string
 
     @IsOptional()
     @IsNumber()
-    id_Proyect?: number
+    id_Proyect: number
+
+    @IsEmpty()
+    @IsNumber()
+    age:number
+
+    @IsEmpty()
+    @IsString()
+    description:string
+
+    @IsEmpty()
+    @IsString()
+    gender?:string
+
+    @IsEmpty()
+    @IsString()
+    info?:string
+
+    @IsEmpty()
+    @IsString()
+    charge?:string
+
 
 }
 

@@ -15,15 +15,15 @@ export class AuthController {
       private readonly jwtService: JwtService 
   ){}
 
-  //@Get()
-  //async getAll(){
-  //  const data =  await this.userService.getall()
-  //  return {
-  //    error: false,
-  //    message: 'Peticion correcta',
-  //    data: data
-  //  }
-  //}
+  @Get()
+  async getAll(){
+    const data =  await this.userService.getall()
+    return {
+      error: false,
+      message: 'Peticion correcta',
+      data: data
+    }
+  }
 
   @Get('user')
   async user(@Req()request: Request) {
@@ -34,9 +34,20 @@ export class AuthController {
     return this.userService.user(request)
   }
 
+
   @Get(':id')
   async getUser(@Param('id', ParseIntPipe) id:number){
     const data =  await this.userService.getUser(id)
+    return {
+      error: false,
+      message: 'Peticion correcta',
+      data: data
+    }
+  }
+
+  @Get(':id/coworkers')
+  async getCoworokers(@Param('id', ParseIntPipe) id:number){
+    const data =  await this.userService.getCoworkers(id)
     return {
       error: false,
       message: 'Peticion correcta',

@@ -8,7 +8,7 @@ export class Proyect {
 
     @Column()
     name: string;
-
+    
     @Column()
     id_Admin: number
 

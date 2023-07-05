@@ -30,10 +30,9 @@ export class TasksController {
     }
   }
 
-  @Post()
-  async createTask(
-    @Body() dto:CreateTaskDto){
-    const data =  await this.taskService.createTask(dto)
+  @Get(':id/byId')
+  async get(@Param('id', ParseIntPipe) id:number){
+    const data =  await this.taskService.get(id)
     return {
       error: false,
       message: 'Peticion correcta',
@@ -41,13 +40,24 @@ export class TasksController {
     }
   }
 
-
   @Put(':id')
   async updateTask(
     @Param('id',ParseIntPipe) id:number, 
     @Body() dto:EditTaskDto){
       const data =  await this.taskService.editTask(id, dto)
       return {
+      error: false,
+      message: 'Peticion correcta',
+      data: data
+    }
+  }
+
+
+  @Post()
+  async createTask(
+    @Body() dto:CreateTaskDto){
+    const data =  await this.taskService.createTask(dto)
+    return {
       error: false,
       message: 'Peticion correcta',
       data: data
@@ -66,3 +76,4 @@ export class TasksController {
   }
 
 }
+

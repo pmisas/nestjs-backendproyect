@@ -2,7 +2,7 @@ import * as bcrypt from 'bcrypt';
 import { BadRequestException, Injectable, NotFoundException, Res, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
-import { CreateUserDto } from 'src/shared';
+import { CreateProyectDto, CreateUserDto } from 'src/shared';
 import { EditUserDto } from 'src/shared/dto/user/edit-user.dto';
 import { LoginDto } from 'src/shared/dto/user/login.dto';
 import { Repository } from 'typeorm';
@@ -10,6 +10,8 @@ import {compare } from 'bcrypt'
 import {JwtService } from '@nestjs/jwt';
 import { IPayload } from './payload.interface';
 import { Response, Request} from 'express';
+import { ProyectsService } from '../proyects/proyects.service';
+import { Proyect } from 'src/entities/proyect.entity';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +19,8 @@ export class AuthService {
     constructor(
         @InjectRepository(User)
         private readonly authRepository:Repository<User>,   
-        private readonly jwtService: JwtService 
+        private readonly jwtService: JwtService,
+        private readonly proyectsSerive: ProyectsService
     ){}
 
     //TRAER TODOS LOS USUARIOS
@@ -33,7 +36,16 @@ export class AuthService {
             where: {id: idUser}
         })
 
-        if (!user) throw new NotFoundException('La USUARIO no existe')
+        if (!user) throw new NotFoundException('El usuario no existe')
+        return user
+    }
+
+    async getCoworkers(idProyect: number){
+        const user = await this.authRepository.find({
+            where: {id_Proyect: idProyect}
+        })
+
+        if (!user) throw new NotFoundException('El usuario no existe')
         return user
     }
 
@@ -50,7 +62,8 @@ export class AuthService {
         const duplicateEmail = await this.authRepository.findOne({
             where:{email: dto.email}
         })
-        if(duplicateEmail) throw new BadRequestException('Ya existe una cuenta con este email')
+        if(duplicateEmail) throw new UnauthorizedException('*Ya existe una cuenta con este email')
+
         var saltOrRounds=10
         const hashedPassword = await bcrypt.hash(dto.password, saltOrRounds)
         dto.password=hashedPassword
@@ -58,6 +71,13 @@ export class AuthService {
         const newuser = await this.authRepository.save(user);
         
         const {password, ...result} = newuser
+
+        if(dto.is_Admin===true){
+            const proyect = this.proyectsSerive.createNewProyect(newuser.id).catch()
+            return proyect
+        }
+
+        
 
         return result
     }
@@ -68,9 +88,9 @@ export class AuthService {
         where: {id: idUser}
     })
     if (!user) throw new NotFoundException('El usuario no existe')
-
     return await this.authRepository.update(idUser, dto)
     }
+
 
     //ELIMINAR USUARIO
     async deleteUser(iduser:number){
@@ -83,14 +103,13 @@ export class AuthService {
     }
 
     async login(
-        dto: LoginDto,
-        @Res({passthrough: true}) response: Response
+        dto: LoginDto, response
         ){
         const {email} = dto;
         const user = await this.authRepository.findOne({where: {email} });
-        if(!user) return new UnauthorizedException('no existe el usurio');
+        if(!user) return new UnauthorizedException('*No existe el usurio');
         const passwordOk = compare(dto.password, user.password) 
-        if (!await bcrypt.compare(dto.password,user.password)) return new UnauthorizedException('contraseña erronea');
+        if (!await bcrypt.compare(dto.password,user.password)) return new UnauthorizedException('*Contraseña incorrecta');
         const payload: IPayload = {
             id: user.id,
             email: user.email,
@@ -100,8 +119,8 @@ export class AuthService {
         const jwt = await this.jwtService.signAsync(payload)
 
         response.cookie('jwt', jwt, {httpOnly:true})
-
-        return {message: 'succes'};
+        
+        return {message: 'succes', data: jwt};
     }
 
     async user(request: Request){
@@ -117,7 +136,7 @@ export class AuthService {
         //quito contrase;a
         const {password, ...result} = user
 
-        return result
+        return user
 
 
         }catch (error){
@@ -125,6 +144,7 @@ export class AuthService {
         }
         
     }
+
     
     async logout(@Res({passthrough: true}) response: Response){
         response.clearCookie('jwt');
@@ -132,6 +152,12 @@ export class AuthService {
             message: 'success'
         }
     }
+
+    //async inProyect(idUser:number, idProyect:any){
+    //    const user = await this.authRepository.findOne({where: {id: idUser} });
+    //    if(user.id_Proyect!==idProyect) throw new UnauthorizedException('un usuario no pertenece al proyecto')
+    //    return user
+    //}
 }
 
 
