@@ -7,7 +7,7 @@ async function bootstrap() {
 
   app.use(cookieParser())
   app.enableCors({
-    origin: 'http://localhost:4200',
+    origin: 'https://mimosascatask.web.app',
     credentials: true
   })
   await app.listen(process.env.PORT || 3000);
