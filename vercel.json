@@ -18,6 +18,5 @@
                 "DELETE"
             ]
         }
-    ],
-    "public":"dist"
+    ]
 }

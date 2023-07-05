@@ -20,7 +20,7 @@ export class User {
     @Column({type: 'varchar', nullable: false})
     password: string;
 
-    @Column({default: false})
+    @Column({nullable: false})
     is_Admin: boolean
 
     @Column({default: "assets/images/user/gato.jpg", nullable:false})

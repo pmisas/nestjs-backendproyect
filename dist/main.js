@@ -7,10 +7,10 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.use(cookieParser());
     app.enableCors({
-        origin: 'http://localhost:4200',
+        origin: 'https://mimosascatask.web.app',
         credentials: true
     });
-    await app.listen(3000);
+    await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

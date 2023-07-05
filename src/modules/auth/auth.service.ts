@@ -72,14 +72,14 @@ export class AuthService {
         
         const {password, ...result} = newuser
 
+        console.log(dto)
         if(dto.is_Admin===true){
-            const proyect = this.proyectsSerive.createNewProyect(newuser.id).catch()
+            const proyect = await this.proyectsSerive.createNewProyect(newuser.id)
+
             return proyect
+        }else{
+            return result
         }
-
-        
-
-        return result
     }
 
     //EDITAR USUARIO

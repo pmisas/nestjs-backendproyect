@@ -58,7 +58,12 @@ export class AuthController {
   @Post('register')
   async register(
     @Body() dto:CreateUserDto){
-    return  await this.userService.createUser(dto)
+    const data =  await this.userService.createUser(dto)
+    return {
+      error: false,
+      message: 'Peticion correcta',
+      data: data
+    }
   }
 
   
