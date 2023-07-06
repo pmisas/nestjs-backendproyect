@@ -10,9 +10,7 @@ async function bootstrap() {
     origin: 'https://angularcatask.web.app',
     credentials: true
   })
-  const host = process.env.HOST || '0.0.0.0'; // Utiliza la variable de entorno HOST o el valor '0.0.0.0' como dirección IP
-  const port = process.env.PORT || 3000; // Utiliza la variable de entorno PORT o el valor 3000 como puerto
-  await app.listen(port, host);
+  await app.listen(3000);
 
 }
 bootstrap();
