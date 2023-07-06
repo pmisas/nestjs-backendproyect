@@ -159,7 +159,6 @@ export class AuthService {
           // El encabezado no tiene el formato esperado
           return false;
         }
-        
         try {
             const tokens = token.replace(/^"(.*)"$/, '$1');
             const data = jwt.decode(tokens, { complete: true })

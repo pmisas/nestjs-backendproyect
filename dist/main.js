@@ -7,7 +7,7 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.use(cookieParser());
     app.enableCors({
-        origin: 'https://mimosascatask.web.app',
+        origin: 'https://angularcatask.web.app',
         credentials: true
     });
     await app.listen(process.env.PORT || 3000);

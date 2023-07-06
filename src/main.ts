@@ -7,7 +7,7 @@ async function bootstrap() {
 
   app.use(cookieParser())
   app.enableCors({
-    origin: 'https://mimosascatask.web.app',
+    origin: 'https://angularcatask.web.app',
     credentials: true
   })
   await app.listen(process.env.PORT || 3000);
