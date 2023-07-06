@@ -10,10 +10,10 @@ async function bootstrap() {
     origin: 'https://angularcatask.web.app',
     credentials: true
   })
-  const host = process.env.HOST ;
-  const port = process.env.PORT ;
+  //const host = process.env.HOST ;
+  //const port = process.env.PORT ;
 
-  await app.listen(port, host);
+  await app.listen(8080, '0.0.0.0')
 
 }
 bootstrap();
