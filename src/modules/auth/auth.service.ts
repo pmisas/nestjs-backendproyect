@@ -110,9 +110,8 @@ export class AuthService {
         dto: LoginDto, response
         ){
         const {email} = dto;
-        const user = await this.authRepository.findOne({where: {email} });
+        const user = await this.authRepository.findOne({where: {email:email} });
         if(!user) return new UnauthorizedException('*No existe el usurio');
-        const passwordOk = compare(dto.password, user.password) 
         if (!await bcrypt.compare(dto.password,user.password)) return new UnauthorizedException('*Contraseña incorrecta');
         const payload: IPayload = {
             id: user.id,
@@ -162,12 +161,13 @@ export class AuthService {
         try {
             const tokens = token.replace(/^"(.*)"$/, '$1');
             const data = jwt.decode(tokens, { complete: true })
-        if (!data){
+        //if (!data){
+        //    throw new UnauthorizedException();
+        //}
 
-            throw new UnauthorizedException();
-        }
 
-        const user = await this.getUser(data['id'])
+        const user = await this.getUser(data.payload['id'])
+        console.log(user)
         //quito contrase;a
         const {password, ...result} = user
 
