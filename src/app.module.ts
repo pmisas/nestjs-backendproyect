@@ -27,6 +27,7 @@ const bd_options = {
       "entities": [__dirname + '**/entities/*.entity{.ts,.js}'],
       "synchronize": true,
     }),
+    
     TasksModule, ProyectsModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
