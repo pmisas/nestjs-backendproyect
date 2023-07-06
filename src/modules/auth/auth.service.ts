@@ -171,7 +171,7 @@ export class AuthService {
         //quito contrase;a
         const {password, ...result} = user
 
-        return authorizationHeader
+        return user
 
 
         }catch (error){
