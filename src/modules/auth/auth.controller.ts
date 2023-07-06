@@ -27,7 +27,7 @@ export class AuthController {
 
   @Get('user')
   async user(@Headers('Authorization') authorizationHeader: string) {
-    return authorizationHeader
+    return this.userService.validateToken(authorizationHeader)
   }
 
 

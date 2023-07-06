@@ -10,7 +10,8 @@ async function bootstrap() {
         origin: 'https://angularcatask.web.app',
         credentials: true
     });
-    await app.listen(8080, '0.0.0.0');
+    const port = process.env.PORT;
+    await app.listen(port || 3000);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

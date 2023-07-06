@@ -172,12 +172,12 @@ export class AuthService {
         const {password, ...result} = user
 
         return user
-
+        
 
         }catch (error){
             throw new UnauthorizedException();
         }
-      }
+    }
 
     
     async logout(@Res({passthrough: true}) response: Response){
