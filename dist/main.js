@@ -10,7 +10,9 @@ async function bootstrap() {
         origin: 'https://angularcatask.web.app',
         credentials: true
     });
-    await app.listen('https://console.clever-cloud.com/users/me/applications/app_45fd2a13-64eb-4ce3-803f-9ea4e101e0ef/logs');
+    const host = process.env.HOST || '0.0.0.0';
+    const port = process.env.PORT || 3000;
+    await app.listen(port, host);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
