@@ -153,6 +153,7 @@ export class AuthService {
 
     
     async validateToken(authorizationHeader: string) {
+
         const [bearer, token] = authorizationHeader.split(' ');
         if (bearer !== 'Bearer' || !token) {
           // El encabezado no tiene el formato esperado
