@@ -8,6 +8,7 @@ import { ProyectsService } from '../proyects/proyects.service';
 import { ProyectsModule } from '../proyects/proyects.module';
 import { ProyectsController } from '../proyects/proyects.controller';
 import { Proyect } from 'src/entities/proyect.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { Proyect } from 'src/entities/proyect.entity';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, ProyectsService],
+  providers: [AuthService, ProyectsService, ConfigService],
   exports: [AuthService]
 })
 export class AuthModule {}

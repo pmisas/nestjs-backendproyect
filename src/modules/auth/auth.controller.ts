@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Req, Res, Headers } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/shared';
 import { EditUserDto } from 'src/shared/dto/user/edit-user.dto';
@@ -26,12 +26,8 @@ export class AuthController {
   }
 
   @Get('user')
-  async user(@Req()request: Request) {
-    const cookie = request.cookies['jwt']
-
-    const data =  await this.jwtService.verifyAsync(cookie)
-
-    return this.userService.user(request)
+  async user(@Headers('Authorization') authorizationHeader: string) {
+    return this.userService.validateToken(authorizationHeader)
   }
 
 
@@ -69,8 +65,7 @@ export class AuthController {
   
   @Post('login')
   async login(
-    @Body() 
-    dto:LoginDto,
+    @Body() dto:LoginDto,
     @Res({'passthrough':true}) response: Response
     ){
     return  await this.userService.login(dto, response)

@@ -12,6 +12,8 @@ import { IPayload } from './payload.interface';
 import { Response, Request} from 'express';
 import { ProyectsService } from '../proyects/proyects.service';
 import { Proyect } from 'src/entities/proyect.entity';
+import * as jwt from 'jsonwebtoken';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +22,8 @@ export class AuthService {
         @InjectRepository(User)
         private readonly authRepository:Repository<User>,   
         private readonly jwtService: JwtService,
-        private readonly proyectsSerive: ProyectsService
+        private readonly proyectsSerive: ProyectsService,
+        private readonly configService: ConfigService
     ){}
 
     //TRAER TODOS LOS USUARIOS
@@ -75,6 +78,7 @@ export class AuthService {
         console.log(dto)
         if(dto.is_Admin===true){
             const proyect = await this.proyectsSerive.createNewProyect(newuser.id)
+            console.log(proyect)
 
             return proyect
         }else{
@@ -124,10 +128,12 @@ export class AuthService {
     }
 
     async user(request: Request){
+        console.log(request)
         try {
         const cookie = request.cookies['jwt']
 
         const data =  await this.jwtService.verifyAsync(cookie)
+        console.log('1',cookie)
         if (!data){
             throw new UnauthorizedException();
         }
@@ -144,6 +150,34 @@ export class AuthService {
         }
         
     }
+
+    
+    async validateToken(authorizationHeader: string) {
+        const [bearer, token] = authorizationHeader.split(' ');
+        if (bearer !== 'Bearer' || !token) {
+          // El encabezado no tiene el formato esperado
+          return false;
+        }
+        
+        try {
+            const tokens = token.replace(/^"(.*)"$/, '$1');
+            const data = jwt.decode(tokens, { complete: true })
+        if (!data){
+
+            throw new UnauthorizedException();
+        }
+
+        const user = await this.getUser(data['id'])
+        //quito contrase;a
+        const {password, ...result} = user
+
+        return user
+
+
+        }catch (error){
+            throw new UnauthorizedException();
+        }
+      }
 
     
     async logout(@Res({passthrough: true}) response: Response){
